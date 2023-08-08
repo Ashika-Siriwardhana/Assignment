@@ -4,6 +4,8 @@
  */
 package assignment.mvc;
 
+import assignment.mvc.view.customerView;
+
 /**
  *
  * @author user
@@ -15,6 +17,7 @@ public class AssignmentMvc {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        new customerView().setVisible(true);
     }
     
 }
