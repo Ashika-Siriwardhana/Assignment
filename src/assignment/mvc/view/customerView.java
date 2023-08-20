@@ -7,9 +7,11 @@ package assignment.mvc.view;
 import assignment.mvc.controller.CustomerController;
 import assignment.mvc.model.CustomerModel;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -23,6 +25,7 @@ public class customerView extends javax.swing.JFrame {
     public customerView() {
         customerController =new CustomerController();
         initComponents();
+        loadAllCustomers();
     }
 
     /**
@@ -59,6 +62,9 @@ public class customerView extends javax.swing.JFrame {
         deleteButton = new javax.swing.JButton();
         custSaloryLabel = new javax.swing.JLabel();
         custSaloryText = new javax.swing.JTextField();
+        tablePanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        customerTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 400));
@@ -235,7 +241,7 @@ public class customerView extends javax.swing.JFrame {
                                 .addComponent(custNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(custNameText, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 52, Short.MAX_VALUE)))
+                        .addGap(0, 66, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         formPanelLayout.setVerticalGroup(
@@ -281,24 +287,59 @@ public class customerView extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        customerTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        customerTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                customerTableMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(customerTable);
+
+        javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
+        tablePanel.setLayout(tablePanelLayout);
+        tablePanelLayout.setHorizontalGroup(
+            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1)
+        );
+        tablePanelLayout.setVerticalGroup(
+            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tablePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(27, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout basePanelLayout = new javax.swing.GroupLayout(basePanel);
         basePanel.setLayout(basePanelLayout);
         basePanelLayout.setHorizontalGroup(
             basePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, basePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
             .addComponent(formPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(basePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(basePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         basePanelLayout.setVerticalGroup(
             basePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(basePanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(20, Short.MAX_VALUE)
                 .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(formPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(190, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -315,7 +356,8 @@ public class customerView extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        pack();
+        setSize(new java.awt.Dimension(828, 554));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void custIDTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_custIDTextActionPerformed
@@ -367,6 +409,11 @@ public class customerView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_addButtonActionPerformed
 
+    private void customerTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerTableMouseClicked
+        searchCustomer();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_customerTableMouseClicked
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -390,10 +437,13 @@ public class customerView extends javax.swing.JFrame {
     private javax.swing.JTextField custTitleText;
     private javax.swing.JLabel custZipLabel;
     private javax.swing.JTextField custZipText;
+    private javax.swing.JTable customerTable;
     private javax.swing.JButton deleteButton;
     private javax.swing.JPanel formPanel;
     private javax.swing.JLabel headerLabel;
     private javax.swing.JPanel headerPanel;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel tablePanel;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
     private void saveCustomer(){
@@ -411,9 +461,81 @@ public class customerView extends javax.swing.JFrame {
         try {
             String respnse =customerController.saveCustomer(customer);
             JOptionPane.showMessageDialog(this, respnse);
+            clear();
+            loadAllCustomers();
         } catch (SQLException ex) {
             Logger.getLogger(customerView.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }
+    private void clear(){
+        
+        custIDText.setText(""); 
+        custTitleText.setText(""); 
+        custNameText.setText("");  
+        custDOBText.setText("");   
+        custSaloryText.setText("");  
+        custAddressText.setText(""); 
+        custCityText.setText("");  
+        custProvinceText.setText("");  
+        custZipText.setText(""); 
+  
+    }
+    public void loadAllCustomers() {
+        try {
+            String[] collumns = {"Id", "Name", "Salary", "Dob", "Address", "Postal Code"};
+
+            DefaultTableModel dtm = new DefaultTableModel(collumns, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+
+            customerTable.setModel(dtm);
+
+            ArrayList<CustomerModel> customerModels = customerController.getAllCustomer();
+
+            for (CustomerModel customer : customerModels) {
+                Object[] rowData = {
+                    customer.getCustId(),
+                    customer.getTitle() + " " + customer.getName(),
+                    customer.getSalory(),
+                    customer.getDob(),
+                    customer.getAddress() + " " + customer.getCity(),
+                    customer.getZip()
+                };
+
+                dtm.addRow(rowData);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(customerView.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }
+    private void searchCustomer(){
+        try {
+            String custId = customerTable.getValueAt(customerTable.getSelectedRow(), 0).toString();
+            
+            CustomerModel customerModel = customerController.getCustomer(custId);
+            
+            if (customerModel != null) {
+                custIDText.setText(customerModel.getCustId());
+                custTitleText.setText(customerModel.getTitle());
+                custNameText.setText(customerModel.getName());
+                custDOBText.setText(customerModel.getDob());
+                custSaloryText.setText(Double.toString(customerModel.getSalory()));
+                custAddressText.setText(customerModel.getAddress());
+                custCityText.setText(customerModel.getCity());
+                custProvinceText.setText(customerModel.getProvince());
+                custZipText.setText(customerModel.getZip());
+            } else {
+                JOptionPane.showMessageDialog(this, "Customer Not Found");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(customerView.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }
+
 }

@@ -10,6 +10,8 @@ import assignment.mvc.model.CustomerModel;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.sql.ResultSet;
 
 
 /**
@@ -36,5 +38,51 @@ public class CustomerController {
         }else{
             return "Fail";
         } 
+    }
+    public ArrayList<CustomerModel> getAllCustomer() throws SQLException{
+        Connection connection = DBConnection.getInstance().getConnection();
+        String query = "SELECT * FROM Customer";
+        PreparedStatement statement = connection.prepareStatement(query);
+        
+        ArrayList<CustomerModel> customerModels = new ArrayList<>();
+        
+        ResultSet rst = statement.executeQuery();
+        while (rst.next()) {            
+            CustomerModel cm = new CustomerModel(rst.getString(1),
+                    rst.getString(2), 
+                    rst.getString(3), 
+                    rst.getString(4), 
+                    rst.getDouble(5),
+                    rst.getString(6), 
+                    rst.getString(7), 
+                    rst.getString(8), 
+                    rst.getString(9));
+            
+            customerModels.add(cm);
+        }
+        
+        return customerModels;
+    }
+    public CustomerModel getCustomer(String custId)throws SQLException{
+        Connection connection = DBConnection.getInstance().getConnection();
+        String query = "SELECT * FROM Customer WHERE CustID = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, custId);
+        
+        ResultSet rst = statement.executeQuery();
+        while (rst.next()) {            
+            CustomerModel cm = new CustomerModel(rst.getString(1),
+                    rst.getString(2), 
+                    rst.getString(3), 
+                    rst.getString(4), 
+                    rst.getDouble(5),
+                    rst.getString(6), 
+                    rst.getString(7), 
+                    rst.getString(8), 
+                    rst.getString(9));
+            
+            return cm;
+        }
+        return null;
     }
 }
